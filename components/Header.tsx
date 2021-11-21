@@ -1,13 +1,16 @@
 import { transparentize } from "polished";
+import React from "react";
 import styled from "styled-components";
 import { HEADER_HEIGHT } from "../_constants";
+import Logo from "./Logo";
+import NavBar from "./NavBar";
 
 export default function Header(props: any) {
   return (
     <Wrapper>
      <Container>
-       <span>logo</span>
-       <span>navbar</span>
+       <Logo/>
+       <NavBar/>
      </Container>
     </Wrapper>
   )
