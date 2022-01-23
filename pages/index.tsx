@@ -33,13 +33,14 @@ export default function Home(props: HomeProps) {
       </PostGrid>
 
       <ReactPaginate 
+        containerClassName={'Pagination'}
         pageCount={posts?.totalPages || 0}
         marginPagesDisplayed={0}
         pageRangeDisplayed={3}
         previousLabel={'<'}
         nextLabel={'>'}
         hrefBuilder={ page => `/?page=${page}`}
-        onPageChange={page => {
+        onPageChange={ page => {
           Router.push(`/?page=${page.selected + 1}`)
         }}
       />
