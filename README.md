@@ -36,5 +36,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 ------------
-https://danielbonifacio.notion.site/Documentos-8dca4ded101d42478b6bc2f2c7a0fb46
+
 
