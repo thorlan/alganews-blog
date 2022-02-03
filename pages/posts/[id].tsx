@@ -2,6 +2,8 @@ import { Post, PostService } from "orlandini-sdk";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 
+import { ResourceNotFoundError, InvalidDataError } from "orlandini-sdk/dist/errors/";
+
 interface PostProps extends NextPageProps {
   post?: Post.Detailed;
 }
@@ -31,8 +33,12 @@ export const getServerSideProps: GetServerSideProps<PostProps, Params> =
           post,
         },
       };
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+
+      if(error instanceof ResourceNotFoundError){
+        return { notFound : true}
+      }
+
       return {
         props: {
           error: {
