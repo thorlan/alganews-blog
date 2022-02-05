@@ -1,62 +1,77 @@
 import { Post, PostService } from "orlandini-sdk";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-
-import { ResourceNotFoundError } from "orlandini-sdk/dist/errors/";
+import { ResourceNotFoundError } from "orlandini-sdk/dist/errors";
+import Head from "next/head";
+import PostHeader from "../../../components/PostHeader";
+import Markdown from "../../../components/MarkDown";
 
 interface PostProps extends NextPageProps {
   post?: Post.Detailed;
+  host?: string;
 }
 
 export default function PostPage(props: PostProps) {
-  return <div>{props.post?.title}</div>;
+
+  const post = props.post;
+
+  return (
+    <>
+      <Head>
+        <link
+          rel="canonical"
+          href={`http://${props.host}/${props.post?.id}/${props.post?.slug}`}
+        />
+      </Head>
+      {post && (
+        <>
+          <PostHeader
+            thumbnail={post?.imageUrls.large}
+            createdAt={post?.createdAt}
+            editor={post?.editor}
+            title={post?.title}
+          />
+          <Markdown>
+            {post.body}
+          </Markdown>
+        </>
+      )}
+    </>
+  );
 }
 
 interface Params extends ParsedUrlQuery {
-  id:string,
-  slug:string
+  id: string;
+  slug: string;
 }
 
 export const getServerSideProps: GetServerSideProps<PostProps, Params> =
-  async ({ params, res }) => {
+  async ({ params, res, req }) => {
     try {
       if (!params) return { notFound: true };
 
-      //nome do arquivo
-      //[...id] = array de string
-      //[id] = unico parametro
-      
-      const {id, slug} = params;
+      const { id, slug } = params;
       const postId = Number(id);
 
       if (isNaN(postId)) return { notFound: true };
 
       const post = await PostService.getExistingPost(postId);
 
-      if(slug !== post.slug) {
-        res.statusCode = 301;
-        res.setHeader('Location', `/posts/${post.id}/${post.slug}`);
-        return {
-          props: {}
-        }
-      }
-
       return {
         props: {
           post,
+          host: req.headers.host,
         },
       };
     } catch (error: any) {
-
-      if(error instanceof ResourceNotFoundError){
-        return { notFound : true}
+      if (error instanceof ResourceNotFoundError) {
+        return { notFound: true };
       }
-
       return {
         props: {
           error: {
             message: error.message,
-            statusCode: error.data?.status || 500, 
+            statusCode: error.data?.status || 500,
           },
         },
       };
