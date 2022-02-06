@@ -5,6 +5,7 @@ import { ResourceNotFoundError } from "orlandini-sdk/dist/errors";
 import Head from "next/head";
 import PostHeader from "../../../components/PostHeader";
 import Markdown from "../../../components/MarkDown";
+import { DiscussionEmbed } from "disqus-react";
 
 interface PostProps extends NextPageProps {
   post?: Post.Detailed;
@@ -18,6 +19,13 @@ export default function PostPage(props: PostProps) {
   return (
     <>
       <Head>
+        <meta property="og:title" content={post?.title} />
+        <meta property="og:site_name" content="AlgaNews" />
+        <meta property="og:url" content="alganews.com.br" />
+        <meta property="og:description" content={post?.body.slice(0, 54)} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content={post?.imageUrls.medium} />
+        <title>{post?.title} - AlgaNews</title>
         <link
           rel="canonical"
           href={`http://${props.host}/${props.post?.id}/${props.post?.slug}`}
@@ -34,6 +42,19 @@ export default function PostPage(props: PostProps) {
           <Markdown>
             {post.body}
           </Markdown>
+
+          <DiscussionEmbed
+            shortname='t-alganews'
+            config={
+              {
+                url: `http://${props.host}/${props.post?.id}/${props.post?.slug}`,
+                identifier: String(post.id),
+                title: post.title,
+                language: 'pt_BR' 	
+              }
+            }
+          />
+
         </>
       )}
     </>
