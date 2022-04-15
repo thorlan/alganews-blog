@@ -1,9 +1,10 @@
-import { Post, PostService } from "orlandini-sdk";
+import { Post, PostService } from "danielbonifacio-sdk";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { ResourceNotFoundError } from "orlandini-sdk/dist/errors";
+import { ResourceNotFoundError } from "danielbonifacio-sdk/dist/errors";
 import Head from "next/head";
 import PostHeader from "../../../components/PostHeader";
+//@ts-ignore
 import Markdown from "../../../components/MarkDown";
 import { DiscussionEmbed } from "disqus-react";
 
@@ -50,7 +51,7 @@ export default function PostPage(props: PostProps) {
                 url: `http://${props.host}/${props.post?.id}/${props.post?.slug}`,
                 identifier: String(post.id),
                 title: post.title,
-                language: 'pt_BR' 	
+                language: 'pt_BR'
               }
             }
           />
@@ -67,16 +68,18 @@ interface Params extends ParsedUrlQuery {
 }
 
 export const getServerSideProps: GetServerSideProps<PostProps, Params> =
-  async ({ params, res, req }) => {
+  async ({ params, res, req, query }) => {
     try {
       if (!params) return { notFound: true };
 
       const { id, slug } = params;
       const postId = Number(id);
 
+      const { token } = query
+
       if (isNaN(postId)) return { notFound: true };
 
-      const post = await PostService.getExistingPost(postId);
+      const post = await PostService.getExistingPost(postId, token as string);
 
       return {
         props: {

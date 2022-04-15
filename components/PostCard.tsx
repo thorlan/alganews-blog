@@ -1,4 +1,4 @@
-import { Post } from "orlandini-sdk";
+import { Post } from "danielbonifacio-sdk";
 import Image from "next/image";
 import { transparentize } from "polished";
 import styled from "styled-components";

@@ -1,4 +1,4 @@
-import { Post } from "orlandini-sdk";
+import { Post } from "danielbonifacio-sdk";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import Link from "next/link";
@@ -11,7 +11,7 @@ interface FeaturedPostProps {
 
 export default function FeaturedPost(props: FeaturedPostProps) {
 
-  const {id, slug} = props.postSummary;
+  const { id, slug } = props.postSummary;
 
   return (
     <Link href={`/posts/${id}/${slug}`} passHref>
@@ -34,7 +34,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
         </Content>
       </Wrapper>
     </Link>
-    );
+  );
 }
 
 const Content = styled.div`
@@ -75,7 +75,7 @@ const Wrapper = styled.a`
   &:hover,
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 4px ${p => transparentize(0.7,p.theme.primaryBackground)};
+    box-shadow: 0 0 0 4px ${p => transparentize(0.7, p.theme.primaryBackground)};
   }
 `;
 

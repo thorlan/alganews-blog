@@ -1,4 +1,4 @@
-import { Post, PostService } from "orlandini-sdk";
+import { Post, PostService } from "danielbonifacio-sdk";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import FeaturedPost from "../components/FeaturedPosts";
@@ -27,20 +27,20 @@ export default function Home(props: HomeProps) {
       <PostGrid>
         {
           posts?.content?.slice(1).map(post => {
-            return <PostCard key={post.id} post={post}/>
+            return <PostCard key={post.id} post={post} />
           })
         }
       </PostGrid>
 
-      <ReactPaginate 
+      <ReactPaginate
         containerClassName={'Pagination'}
         pageCount={posts?.totalPages || 0}
         marginPagesDisplayed={0}
         pageRangeDisplayed={3}
         previousLabel={'<'}
         nextLabel={'>'}
-        hrefBuilder={ page => `/?page=${page}`}
-        onPageChange={ page => {
+        hrefBuilder={page => `/?page=${page}`}
+        onPageChange={page => {
           Router.push(`/?page=${page.selected + 1}`)
         }}
       />
