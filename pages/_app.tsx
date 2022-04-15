@@ -10,9 +10,10 @@ import Footer from '../components/Footer'
 import Content from '../components/Content'
 import ProgressBar from "@badrap/bar-of-progress"
 import { Router } from 'next/router'
+import '../httpConfig'
 
 interface CustomAppProps extends NextPageProps {
-  
+
 }
 
 //concatenando e sobescrevendo meu pageProps
@@ -21,16 +22,16 @@ type AppProps<P = any> = {
 } & Omit<NextAppProps<P>, "pageProps">
 
 const progress = new ProgressBar({
-  size:2,
+  size: 2,
   color: light.primaryBackground,
   delay: 100,
 })
 
 function MyApp({ Component, pageProps }: AppProps<CustomAppProps>) {
 
-  if(pageProps.error){
+  if (pageProps.error) {
     return (
-      <Error 
+      <Error
         statusCode={pageProps.error.statusCode}
         title={pageProps.error.message}
       />
